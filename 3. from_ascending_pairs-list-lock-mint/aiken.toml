@@ -1,0 +1,23 @@
+name = "aiken-lang/from_ascending_pairs-list-lock-mint"
+version = "0.0.0"
+compiler = "v1.1.5"
+plutus = "v3"
+license = "Apache-2.0"
+description = "Aiken contracts for project 'aiken-lang/from_ascending_pairs-list-lock-mint'"
+
+[repository]
+user = "aiken-lang"
+project = "from_ascending_pairs-list-lock-mint"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v2.1.0"
+source = "github"
+
+[[dependencies]]
+name = "aiken-lang/fuzz"
+version = "v2"
+source = "github"
+
+[config]
