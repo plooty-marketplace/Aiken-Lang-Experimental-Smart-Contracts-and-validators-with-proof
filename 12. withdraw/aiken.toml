@@ -1,0 +1,16 @@
+name = "aiken-lang/withdraw"
+version = "0.0.0"
+compiler = "v1.0.29-alpha"
+plutus = "v2"
+license = "Apache-2.0"
+description = "Aiken contracts for project 'aiken-lang/withdraw'"
+
+[repository]
+user = "aiken-lang"
+project = "withdraw"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v2.1.0"
+source = "github"
