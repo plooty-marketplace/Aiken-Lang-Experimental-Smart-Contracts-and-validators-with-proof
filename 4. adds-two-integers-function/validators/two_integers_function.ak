@@ -1,0 +1,74 @@
+use aiken/collection/list
+use aiken/fuzz
+use cardano/assets
+use cardano/transaction.{Transaction}
+
+// Adds two integers
+fn add(a: Int, b: Int) -> Int {
+  a + b
+}
+
+validator main {
+  mint(redeemer: List<Int>, policy_id: ByteArray, self: Transaction) {
+    trace @"minting": policy_id, @"with", redeemer
+
+    let quantities =
+      self.mint
+        |> assets.flatten
+        |> list.map(fn(t) { t.3rd })
+
+    (quicksort(redeemer) == quantities)?
+  }
+
+  else(_) {
+    fail
+  }
+}
+
+fn quicksort(xs: List<Int>) -> List<Int> {
+  when xs is {
+    [] ->
+      []
+    [p, ..tail] -> {
+      let before =
+        tail
+          |> list.filter(fn(x) { x < p })
+          |> quicksort
+      let after =
+        tail
+          |> list.filter(fn(x) { x >= p })
+          |> quicksort
+      list.concat(before, [p, ..after])
+    }
+  }
+}
+
+test quicksort_0() {
+  quicksort([]) == []
+}
+
+test quicksort_1() {
+  quicksort([3, 2, 1, 4]) == [1, 2, 3, 4]
+}
+
+test quicksort_2() {
+  quicksort([1, 2, 3, 4]) == [1, 2, 3, 4]
+}
+
+test quicksort_prop(xs via fuzz.list(fuzz.int())) {
+  fuzz.label_when(list.is_empty(xs), @"empty", @"non-empty")
+  quicksort(xs) == quicksort(quicksort(xs))
+}
+
+// Tests for add function
+test add_test_0() {
+  add(2, 3) == 5
+}
+
+test add_test_1() {
+  add(-1, 1) == 0
+}
+
+test add_test_2() {
+  add(0, 0) == 0
+}
